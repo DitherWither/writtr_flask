@@ -1,0 +1,10 @@
+{% extends "blog/index.html" %}
+
+{% block heading %}
+<h1 class="mb-4 mt-2 display-1">
+    Posts by {{ user['first_name'] }} {{ user['last_name'] }} (@{{ user['user_name'] }})
+</h1>
+{% endblock heading %}
+
+{% block post_subtitle %}
+{% endblock post_subtitle %}

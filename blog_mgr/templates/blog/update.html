@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{%- macro getField(field_name) -%}
+    {{ post[field_name] }}
+{%- endmacro -%}
+
+{% block content %}
+<h1 class=" mb-4 mt-2">
+    Update Post
+</h1>
+
+
+<form action="{{ url_for('blog.delete', post_id=post['post_id']) }}" id="delete-form" method="post"></form>
+<form method="post" id="create-form">
+</form>
+
+<input form="create-form" name="title" class="form-control mb-3" value="{{ getField('title') }}" placeholder="Title">
+<textarea form="create-form" name="description" id="description" class="form-control mb-3"
+    placeholder="Description">{{ getField('description') }}</textarea>
+
+<textarea form="create-form" name="body" id="body" class="form-control mb-3"
+    style="height: auto; min-height: 40rem">{{ getField('body') }}</textarea>
+
+<div class="text-center">
+    <input type="submit" form="create-form" class="btn btn-primary" value="Save">
+    <input form="delete-form" type="submit" value="Delete Post" class="btn btn-danger">
+</div>
+{% endblock content %}

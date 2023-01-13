@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Posts
+{% endblock title %}
+
+{% block content %}
+{% block heading %}
+<h1 class="mb-4 mt-2 display-1">
+    Index
+</h1>
+{% endblock heading %}
+<div class="container">
+    <div class="row">
+        {% for post in posts %}
+        {# {% set post_ = post %} #}
+        <div class="col col-sm-4">
+            <a href="{{ url_for('blog.view', post_id=post['post_id']) }}" class="text-reset text-decoration-none">
+                <div class="card" style="width: auto;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post['title']}}</h5>
+                        {# {% block post_subtitle %} #}
+                        <h6 class="card-subtitle mb-2 text-muted">by {{ post['first_name']}} {{ post['last_name']}} (@{{
+                            post['user_name']}})</h6>
+                        {# {% endblock post_subtitle %} #}
+
+                        <p class="card-text">{{ post['description'] }}</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

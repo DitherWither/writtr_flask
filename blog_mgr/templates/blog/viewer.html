@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ post['title'] }}
+{% endblock title %}
+
+{% block content %}
+    <h1 class="mb-4 mt-2 display-1">
+        {{ post['title']}}
+    </h1>
+
+    <h3 class="text-muted">by {{ post['first_name']}} {{ post['last_name']}} (@{{ post['user_name']}})</h3>
+
+    <p class="lead">{{ post['description'] }}</p>
+
+    <p>{{ post['body'] | markdown }}</p>
+{% endblock content %}
