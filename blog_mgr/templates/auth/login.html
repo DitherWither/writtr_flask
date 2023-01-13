@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>
+    {% block title %}Log in{% endblock title %}
+</h1>
+{% endblock header %}
+
+{% block content %}
+<div class="position-absolute top-50 start-50 translate-middle card">
+    <div class="card-body">
+        <h1 class="card-title mb-4 mt-2">
+            Log in
+        </h1>
+        <form method="post">
+            <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input name="user_name" id="user_name" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">🞷</span>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+                    required>
+            </div>
+            <div class="text-center">
+                <input type="submit" class="btn btn-primary" value="Login">
+            </div>
+        </form>
+        <p class="text-center my-3">
+            Don't have an account? <br>
+            <a href="{{url_for('auth.register')}}">Create an account instead</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}

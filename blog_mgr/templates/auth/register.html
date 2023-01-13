@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+{% block title %} Register {% endblock title %}
+
+
+{% block content %}
+<div class="position-absolute top-50 start-50 translate-middle card">
+    <div class="card-body">
+        <h1 class="card-title mb-4 mt-2">
+            Register
+        </h1>
+        <form method="post">
+            <div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@</span>
+                    <input name="user_name" id="user_name" class="form-control" placeholder="Username" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-text">🞷</span>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+                        required>
+                </div>
+
+                <div class="my-3">
+                    <h4 class="fs-6 fw-bold">Display name</h4>
+                    <div class="input-group">
+                        <input name="first_name" id="first_name" placeholder="First Name" class="form-control" required>
+                        <input name="last_name" id="last_name" placeholder="Last Name" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <input type="submit" class="btn btn-primary" value="Register">
+                </div>
+        </form>
+        <p class="text-center my-3">
+            Already have an account? <br>
+            <a href="{{ url_for('auth.login') }}">Log in instead</a>
+        </p>
+    </div>
+</div>
+{% endblock content %}
