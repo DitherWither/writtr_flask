@@ -1,4 +1,3 @@
-import os
 from os import environ;
 import dotenv
 
@@ -25,14 +24,6 @@ def create_app(test_config=None):
     else:
         # Otherwise, just load the argument passed in
         app.config.from_mapping(test_config)
-
-    try:
-        # The directory is needed as the database is stored there
-        # but is not created automatically
-        os.makedirs(app.instance_path)
-    except OSError:
-        # print(f"Error: Could not create directory {app.instance_path}")
-        pass
 
     Markdown(app)
     blog_mgr.db.init_app(app)
