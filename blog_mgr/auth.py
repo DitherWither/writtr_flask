@@ -1,5 +1,5 @@
 import functools
-import sqlite3
+import psycopg2
 
 import flask
 import werkzeug.security as security
@@ -30,16 +30,17 @@ def register():
 
         if error is None:
             try:
-                db = blog_mgr.db.get()
-                db.execute(
-                    "INSERT INTO user (first_name, last_name, user_name, password) VALUES (?, ?, ?, ?)",
+                cursor = blog_mgr.db.get().cursor()
+                cursor.execute(
+                    "INSERT INTO user (first_name, last_name, user_name, password) VALUES (%s, %s, %s, %s)",
                     (first_name, last_name, user_name,
                      security.generate_password_hash(password))
                 )
-                db.commit()
-            except sqlite3.IntegrityError:
+                cursor.close()
+            except psycopg2.IntegrityError:
                 error = f"User '{user_name}' already exists"
             else:
+                
                 return flask.redirect(flask.url_for("auth.login"))
 
         flask.flash(error)
@@ -53,12 +54,12 @@ def login():
         user_name = flask.request.form['user_name']
         password = flask.request.form['password']
 
-        db = blog_mgr.db.get()
+        cursor = blog_mgr.db.get().cursor
         error = None
 
-        user = db.execute(
-            "SELECT * FROM user WHERE user_name = ?", (user_name,)).fetchone()
-
+        user = cursor.execute(
+            "SELECT * FROM user WHERE user_name = %s", (user_name,)).fetchone()
+        cursor.close()
         if user is None:
             error = 'Incorrect username'
         elif not security.check_password_hash(user['password'], password):
@@ -76,13 +77,13 @@ def login():
 
 @bp.before_app_request
 def load_logged_in_user():
-    user_id = flask.session.get('user_id')
-    if user_id is None:
+    user_name = flask.session.get('user_name')
+    if user_name is None:
         flask.g.user = None
     else:
-        flask.g.user = blog_mgr.db \
-            .get() \
-            .execute('SELECT * FROM USER WHERE user_id = ?', (user_id,)) \
+        cursor = blog_mgr.db.get().cursor()
+        flask.g.user = cursor\
+            .execute('SELECT * FROM USER WHERE user_name = %s', (user_name,)) \
             .fetchone()
 
 

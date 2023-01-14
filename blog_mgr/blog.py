@@ -8,11 +8,12 @@ bp = flask.Blueprint('blog', __name__)
 
 @bp.route('/')
 def index():
-    db = blog_mgr.db.get()
-    posts = db.execute(
-        "SELECT post_id, title,time_created,first_name,last_name,user_name,description, author_id " +
-        "FROM post LEFT JOIN user ON post.author_id = user.user_id NATURAL JOIN user ORDER BY time_created DESC;"
+    cursor = blog_mgr.db.get().cursor()
+    posts = cursor.execute(
+        "SELECT post_id, title,time_created,first_name,last_name,user_name,description, author " +
+        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user ORDER BY time_created DESC;"
     ).fetchall()
+    cursor.close()
     return flask.render_template('blog/index.html', posts=posts)
 
 
@@ -25,30 +26,32 @@ def create():
         if content['error'] is not None:
             flask.flash(content['error'])
         else:
-            db = blog_mgr.db.get()
-            db.execute(
-                'INSERT INTO post(title, body, author_id, description)'
-                'VALUES(?, ?, ?, ?)',
+            cursor = blog_mgr.db.get().cursor()
+            cursor.execute(
+                'INSERT INTO post(title, body, author, description)'
+                'VALUES(%s, %s, %s, %s)',
                 (content['title'], content['body'],
-                 flask.g.user['user_id'], content['description'])
+                 flask.g.user['user_name'], content['description'])
             )
-            db.commit()
+            cursor.close()
             return flask.redirect(flask.url_for('blog.index'))
 
     return flask.render_template('blog/create.html')
 
 
 def get_post(post_id, check_author=True):
-    post = blog_mgr.db.get().execute(
-        "SELECT post_id, body, title,time_created,first_name,last_name,user_name,description, user_id, author_id " +
-        "FROM post LEFT JOIN user ON post.author_id = user.user_id NATURAL JOIN user WHERE post_id = ?;",
+    cursor = blog_mgr.db.get().cursor()
+    post = cursor.execute(
+        "SELECT post_id, body, title,time_created,first_name,last_name,user_name,description, author " +
+        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user WHERE post_id = ?;",
         (post_id,)
     ).fetchone()
+    cursor.close()
     if post is None:
         flask.abort(404, f"Post id '{post_id}' does not exist.")
 
     if check_author:
-        if post['user_id'] != flask.g.user['user_id']:
+        if post['user_name'] != flask.g.user['user_name']:
             flask.abort(403)
 
     return dict(post)
@@ -70,7 +73,6 @@ def read_post_form():
 
 @bp.route('/view/<int:post_id>')
 def view(post_id: int):
-    db = blog_mgr.db.get()
     post = get_post(post_id, check_author=False)
 
     return flask.render_template('blog/viewer.html', post=post)
@@ -86,13 +88,13 @@ def update(post_id: int):
         if content['error'] is not None:
             flask.flash(content['error'])
         else:
-            db = blog_mgr.db.get()
-            db.execute(
-                'UPDATE post SET title = ?, body = ?, description = ? WHERE post_id = ?',
+            cursor = blog_mgr.db.get().cursor()
+            cursor.execute(
+                'UPDATE post SET title = %s, body = %s, description = %s WHERE post_id = %s',
                 (content['title'], content['body'],
                  content['description'], post_id)
             )
-            db.commit()
+            cursor.close()
             return flask.redirect(flask.url_for('blog.index'))
     return flask.render_template('blog/update.html', post=post)
 
@@ -104,9 +106,9 @@ def delete(post_id):
     # if the user is allowed to modify the post
     _ = get_post(post_id)
 
-    db = blog_mgr.db.get()
-    db.execute('DELETE FROM post WHERE post_id = ?', (post_id,))
-    db.commit()
+    cursor = blog_mgr.db.get().cursor()
+    cursor.execute('DELETE FROM post WHERE post_id = %s', (post_id,))
+    cursor.close()
 
     return flask.redirect(flask.url_for('blog.index'))
 
@@ -118,15 +120,16 @@ def view_user(handle):
 
     user_name = handle[1:]
 
-    db = blog_mgr.db.get()
-    user = db.execute('SELECT user_id, first_name, last_name, user_name FROM user WHERE user_name = ?',
+    cursor = blog_mgr.db.get().cursor()
+    user = cursor.execute('SELECT first_name, last_name, user_name FROM user WHERE user_name = %s',
                       (user_name,)).fetchone()
-    user_posts = db.execute(
-        "SELECT post_id, title,time_created,description, user_name, author_id " +
-        "FROM post LEFT JOIN user ON post.author_id = user.user_id NATURAL JOIN user user WHERE user.user_name = ? "
+    user_posts = cursor.execute(
+        "SELECT post_id, title,time_created,description, user_name, author " +
+        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user user WHERE user.user_name = ? "
         "ORDER BY time_created DESC;",
         (user_name,)
     ).fetchall()
+    cursor.close()
 
     list = [dict(post) for post in user_posts]
 

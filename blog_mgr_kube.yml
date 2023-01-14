@@ -1,0 +1,112 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-4.3.1
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    io.kubernetes.cri-o.ContainerType/agitatedsammet: container
+    io.kubernetes.cri-o.ContainerType/pgadmin: container
+    io.kubernetes.cri-o.ContainerType/postgres: container
+    io.kubernetes.cri-o.SandboxID/agitatedsammet: 7649555a6c8e788b9c7f119418ef75cf0c0f05e5c61a1c3cd832a6c597a31ed
+    io.kubernetes.cri-o.SandboxID/pgadmin: 7649555a6c8e788b9c7f119418ef75cf0c0f05e5c61a1c3cd832a6c597a31ed
+    io.kubernetes.cri-o.SandboxID/postgres: 7649555a6c8e788b9c7f119418ef75cf0c0f05e5c61a1c3cd832a6c597a31ed
+    io.kubernetes.cri-o.TTY/agitatedsammet: "false"
+    io.kubernetes.cri-o.TTY/pgadmin: "false"
+    io.kubernetes.cri-o.TTY/postgres: "false"
+    io.podman.annotations.autoremove/agitatedsammet: "FALSE"
+    io.podman.annotations.autoremove/pgadmin: "FALSE"
+    io.podman.annotations.autoremove/postgres: "FALSE"
+    io.podman.annotations.init/agitatedsammet: "FALSE"
+    io.podman.annotations.init/pgadmin: "FALSE"
+    io.podman.annotations.init/postgres: "FALSE"
+    io.podman.annotations.privileged/agitatedsammet: "FALSE"
+    io.podman.annotations.privileged/pgadmin: "FALSE"
+    io.podman.annotations.privileged/postgres: "FALSE"
+    io.podman.annotations.publish-all/agitatedsammet: "FALSE"
+    io.podman.annotations.publish-all/pgadmin: "FALSE"
+    io.podman.annotations.publish-all/postgres: "FALSE"
+  creationTimestamp: "2023-01-14T09:24:36Z"
+  labels:
+    app: blogmgr
+  name: blog_mgr
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - env:
+    - name: PGADMIN_DEFAULT_EMAIL
+      value: demonslayervardhan@gmail.com
+    - name: PGADMIN_DEFAULT_PASSWORD
+      value: hivardhan
+    - name: ENABLE_PSQL
+      value: True
+    image: docker.io/dpage/pgadmin4:latest
+    name: pgadmin
+    ports:
+    - containerPort: 80
+      hostPort: 9876
+    - containerPort: 5000
+      hostPort: 5000
+    - containerPort: 5432
+      hostPort: 5432
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+    volumeMounts:
+    - mountPath: /var/lib/pgadmin
+      name: 5ee68107c36df3a8e2b257d176e7a1fe5029af83601695d2d6fa7742ce8d7ad7-pvc
+  - args:
+    - postgres
+    env:
+    - name: POSTGRES_PASSWORD
+      value: hivardhan
+    - name: POSTGRES_USER
+      value: vardhan
+    image: docker.io/library/postgres:latest
+    name: postgres
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: 6670477f4b83410ad3b190f95f3b420301a7a25cf7b7543abc50ce28d2863dde-pvc
+  - env:
+    - name: --name
+      value: blog_mgr_flask
+    image: localhost/blog_mgr_flask:latest
+    name: blogmgr-flask
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+    volumeMounts:
+    - mountPath: /app
+      name: home-vardhan-Projects-blog-host-0
+  enableServiceLinks: false
+  hostname: blog_mgr
+  restartPolicy: Never
+  volumes:
+  - name: 5ee68107c36df3a8e2b257d176e7a1fe5029af83601695d2d6fa7742ce8d7ad7-pvc
+    persistentVolumeClaim:
+      claimName: 5ee68107c36df3a8e2b257d176e7a1fe5029af83601695d2d6fa7742ce8d7ad7
+  - name: 6670477f4b83410ad3b190f95f3b420301a7a25cf7b7543abc50ce28d2863dde-pvc
+    persistentVolumeClaim:
+      claimName: 6670477f4b83410ad3b190f95f3b420301a7a25cf7b7543abc50ce28d2863dde
+  - hostPath:
+      path: /home/vardhan/Projects/blog
+      type: Directory
+    name: home-vardhan-Projects-blog-host-0
+status: {}
+
