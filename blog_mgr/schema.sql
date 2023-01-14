@@ -1,20 +1,18 @@
-DROP TABLE IF EXISTS user;
-DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE user (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE users (
+    user_name TEXT NOT NULL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    user_name TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 
-CREATE TABLE post (
-    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    author_id INTEGER NOT NULL,
+CREATE TABLE posts (
+    post_id SERIAL PRIMARY KEY,
+    author TEXT NOT NULL REFERENCES users (user_name),
     time_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
-    description TEXT,
-    FOREIGN KEY (author_id) REFERENCES user (user_id)
+    description TEXT
 );

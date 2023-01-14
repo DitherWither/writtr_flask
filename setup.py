@@ -12,6 +12,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'Flask',
-        'Flask-Markdown'
+        'Flask-Markdown',
+        'psycopg2-binary',
+        'python-dotenv'
     ]
 )
