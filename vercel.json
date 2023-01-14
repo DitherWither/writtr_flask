@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "blog_mgr/__init__.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "blog_mgr/__init__.py"
+      }
+    ]
+  }
