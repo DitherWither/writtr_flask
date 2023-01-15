@@ -1,0 +1,27 @@
+{
+  "name": "wrttr",
+  "version": "0.1.0",
+  "description": "A webapp where you can post stuff",
+  "main": "main.js",
+  "scripts": {
+    "compile_sass": "sass --watch scss:assets/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DitherWither/writtr.git"
+  },
+  "author": "DitherWither",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DitherWither/writtr/issues"
+  },
+  "homepage": "https://github.com/DitherWither/writtr#readme",
+  "dependencies": {
+    "autoprefixer": "^10.4.13",
+    "bootstrap": "^5.3.0-alpha1",
+    "postcss-cli": "^10.1.0"
+  },
+  "devDependencies": {
+    "sass": "^1.57.1"
+  }
+}
