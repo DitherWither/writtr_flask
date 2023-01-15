@@ -24,4 +24,3 @@ app.register_blueprint(blog_mgr.auth.bp)
 
 app.add_url_rule('/', endpoint='blog.index')
 app.register_blueprint(bp)
-

@@ -9,9 +9,11 @@ bp = flask.Blueprint('blog', __name__)
 @bp.route('/')
 def index():
     cursor = blog_mgr.db.get().cursor()
+    posts = []
+
     posts = cursor.execute(
         "SELECT post_id, title,time_created,first_name,last_name,user_name,description, author " +
-        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user ORDER BY time_created DESC;"
+        "FROM posts LEFT JOIN users AS u ON author = u.user_name NATURAL JOIN users ORDER BY time_created DESC;"
     ).fetchall()
     cursor.close()
     return flask.render_template('blog/index.html', posts=posts)
@@ -28,7 +30,7 @@ def create():
         else:
             cursor = blog_mgr.db.get().cursor()
             cursor.execute(
-                'INSERT INTO post(title, body, author, description)'
+                'INSERT INTO posts(title, body, author, description)'
                 'VALUES(%s, %s, %s, %s)',
                 (content['title'], content['body'],
                  flask.g.user['user_name'], content['description'])
@@ -43,7 +45,7 @@ def get_post(post_id, check_author=True):
     cursor = blog_mgr.db.get().cursor()
     post = cursor.execute(
         "SELECT post_id, body, title,time_created,first_name,last_name,user_name,description, author " +
-        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user WHERE post_id = ?;",
+        "FROM posts LEFT JOIN users u ON posts.author = u.user_name NATURAL JOIN users WHERE post_id = %s;",
         (post_id,)
     ).fetchone()
     cursor.close()
@@ -90,7 +92,7 @@ def update(post_id: int):
         else:
             cursor = blog_mgr.db.get().cursor()
             cursor.execute(
-                'UPDATE post SET title = %s, body = %s, description = %s WHERE post_id = %s',
+                'UPDATE posts SET title = %s, body = %s, description = %s WHERE post_id = %s',
                 (content['title'], content['body'],
                  content['description'], post_id)
             )
@@ -102,12 +104,12 @@ def update(post_id: int):
 @bp.route('/delete/<int:post_id>', methods=['POST'])
 @blog_mgr.auth.login_required
 def delete(post_id):
-    # don't really care about what the post is, but want to check 
+    # don't really care about what the post is, but want to check
     # if the user is allowed to modify the post
     _ = get_post(post_id)
 
     cursor = blog_mgr.db.get().cursor()
-    cursor.execute('DELETE FROM post WHERE post_id = %s', (post_id,))
+    cursor.execute('DELETE FROM posts WHERE post_id = %s', (post_id,))
     cursor.close()
 
     return flask.redirect(flask.url_for('blog.index'))
@@ -121,11 +123,11 @@ def view_user(handle):
     user_name = handle[1:]
 
     cursor = blog_mgr.db.get().cursor()
-    user = cursor.execute('SELECT first_name, last_name, user_name FROM user WHERE user_name = %s',
-                      (user_name,)).fetchone()
+    user = cursor.execute('SELECT first_name, last_name, user_name FROM users WHERE user_name = %s',
+                          (user_name,)).fetchone()
     user_posts = cursor.execute(
         "SELECT post_id, title,time_created,description, user_name, author " +
-        "FROM post LEFT JOIN user ON post.author = user.user_name NATURAL JOIN user user WHERE user.user_name = ? "
+        "FROM posts LEFT JOIN users ON posts.author = users.user_name NATURAL JOIN users WHERE users.user_name = %s "
         "ORDER BY time_created DESC;",
         (user_name,)
     ).fetchall()
