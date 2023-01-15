@@ -1,1 +1,3 @@
-import bootstrap from 'bootstrap';
+// import $ from 'jquery';
+// window.$ = $;
+// import 'bootstrap';
