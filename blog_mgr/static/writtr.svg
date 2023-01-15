@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="16.0px"
-   height="16.0px"
-   viewBox="0 0 16.0 16.0"
+   width="720"
+   height="720"
+   viewBox="0 0 16 16"
    version="1.1"
    id="SVGRoot"
    sodipodi:docname="writtr.svg"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      showgrid="true"
-     inkscape:zoom="35.015469"
-     inkscape:cx="2.4560574"
-     inkscape:cy="5.454732"
+     inkscape:zoom="76.596338"
+     inkscape:cx="10.953526"
+     inkscape:cy="6.3971726"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
@@ -53,12 +53,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#ffffff"
+       style="fill:#ffffff;stroke-width:1.00623"
        id="rect506"
        width="16.026623"
-       height="15.866871"
+       height="16.065048"
        x="0.0020080411"
-       y="0.074297518" />
+       y="-0.046516433" />
     <rect
        style="fill:#000000"
        id="rect413"
@@ -85,36 +85,8 @@
        id="text297"
        style="font-family:'Bree Serif';-inkscape-font-specification:'Bree Serif'">
       <path
-         d="m 13.25,4.982 -0.396,0.036 Q 12.542,5.0419999 12.458,5.45 l -1.512,6.54 H 9.3020001 l -1.26,-5.34 h -0.036 L 6.782,11.99 H 5.09 L 3.434,5.0659999 2.75,5.03 V 4.01 h 2.976 v 0.972 l -0.396,0.036 Q 4.958,5.0539999 4.958,5.33 q 0,0.048 0.012,0.1079999 L 6.014,10.07 H 6.062 L 7.31,4.6459999 H 8.8580001 L 10.154,10.094 h 0.024 l 1.02,-5.0160001 -0.648,-0.048 v -1.02 h 2.7 z"
+         d="M 13.25,4.982 12.854,5.018 Q 12.542,5.042 12.458,5.45 l -1.512,6.54 H 9.3020001 l -1.26,-5.34 h -0.036 L 6.782,11.99 H 5.09 L 3.434,5.0659999 2.75,5.03 V 4.01 H 5.726 V 4.982 L 5.33,5.018 Q 4.958,5.054 4.958,5.33 q 0,0.048 0.012,0.1079999 L 6.014,10.07 H 6.062 L 7.31,4.6459999 H 8.8580001 L 10.154,10.094 h 0.024 l 1.02,-5.0160001 -0.648,-0.048 v -1.02 h 2.7 z"
          id="path598" />
     </g>
-    <rect
-       style="fill:#ffffff"
-       id="rect521"
-       width="20.24507"
-       height="2.4248211"
-       x="-1.5603595"
-       y="-1.7434258" />
-    <rect
-       style="fill:#ffffff"
-       id="rect523"
-       width="19.565794"
-       height="1.0941592"
-       x="-1.5034649"
-       y="15.497503" />
-    <rect
-       style="fill:#ffffff"
-       id="rect525"
-       width="3.8771927"
-       height="22.348827"
-       x="15.404129"
-       y="-3.6782851" />
-    <rect
-       style="fill:#ffffff"
-       id="rect527"
-       width="2.4852855"
-       height="18.531429"
-       x="-1.8819808"
-       y="-1.8760681" />
   </g>
 </svg>
