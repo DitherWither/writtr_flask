@@ -2,7 +2,18 @@ import psycopg
 import os
 import click
 import flask
+import requests
 
+# cockroachdb needs the certificate
+def get_cert():
+    if 'db_cert_text' not in flask.g:
+        flask.g.db_cert_text = requests.get(os.environ.get("DATABASE_CERT")).content
+    
+    return flask.g.db_cert_text
+
+def create_certfile():
+    open('/tmp/root.crt', 'wb')\
+        .write(get_cert())
 
 def get():
     # return connection
@@ -12,7 +23,8 @@ def get():
     #     #     detect_types=sqlite3.PARSE_DECLTYPES
     #     # )
     #     # flask.g.db.row_factory = sqlite3.Row
-        flask.g.db = psycopg.connect(os.environ.get('DATABASE_URL'), row_factory=psycopg.rows.dict_row)
+        create_certfile()
+        flask.g.db = psycopg.connect(os.environ.get('DATABASE_URL') + '&sslrootcert=/tmp/root.crt', row_factory=psycopg.rows.dict_row)
         print(flask.g.db)
 
     return flask.g.db
