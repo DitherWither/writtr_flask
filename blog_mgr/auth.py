@@ -32,7 +32,7 @@ def register():
             try:
                 cursor = blog_mgr.db.get().cursor()
                 cursor.execute(
-                    "INSERT INTO user (first_name, last_name, user_name, password) VALUES (%s, %s, %s, %s)",
+                    "INSERT INTO users (first_name, last_name, user_name, password) VALUES (%s, %s, %s, %s)",
                     (first_name, last_name, user_name,
                      security.generate_password_hash(password))
                 )
@@ -54,11 +54,11 @@ def login():
         user_name = flask.request.form['user_name']
         password = flask.request.form['password']
 
-        cursor = blog_mgr.db.get().cursor
+        cursor = blog_mgr.db.get().cursor()
         error = None
 
         user = cursor.execute(
-            "SELECT * FROM user WHERE user_name = %s", (user_name,)).fetchone()
+            "SELECT * FROM users WHERE user_name = %s", (user_name,)).fetchone()
         cursor.close()
         if user is None:
             error = 'Incorrect username'
@@ -67,7 +67,7 @@ def login():
 
         if error is None:
             flask.session.clear()
-            flask.session['user_id'] = user['user_id']
+            flask.session['user_name'] = user['user_name']
             return flask.redirect(flask.url_for('blog.index'))
 
         flask.flash(error)
@@ -83,7 +83,7 @@ def load_logged_in_user():
     else:
         cursor = blog_mgr.db.get().cursor()
         flask.g.user = cursor\
-            .execute('SELECT * FROM USER WHERE user_name = %s', (user_name,)) \
+            .execute('SELECT * FROM users WHERE user_name = %s', (user_name,)) \
             .fetchone()
 
 
