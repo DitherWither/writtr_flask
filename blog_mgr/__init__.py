@@ -2,6 +2,8 @@ import os
 from os import environ
 import dotenv
 
+import requests
+
 from flask import Flask
 from flaskext.markdown import Markdown
 
@@ -21,8 +23,11 @@ app.config.from_mapping(
 Markdown(app)
 blog_mgr.db.init_app(app)
 
+open(os.path.join(os.environ.get("HOME"), '.postgresql', 'root.crt'), 'wb')\
+    .write(
+        requests.get(environ.get("DATABASE_CERT")).content
+)
 
-os.system(os.path.join(os.path.dirname(__file__), 'install_cert.sh'))
 print(os.path.dirname(__file__))
 
 app.register_blueprint(blog_mgr.auth.bp)
