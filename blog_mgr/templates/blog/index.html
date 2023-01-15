@@ -17,6 +17,9 @@ Posts
         <div class="col col-sm-4">
             <a href="{{ url_for('blog.view', post_id=post['post_id']) }}" class="text-reset text-decoration-none">
                 <div class="card" style="width: auto;">
+                    {% if post['thumbnail_url'] %}
+                        <img class="card-img-top" src="{{ post['thumbnail_url'] }}" alt="Post Thumbnail">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post['title']}}</h5>
                         {# {% block post_subtitle %} #}

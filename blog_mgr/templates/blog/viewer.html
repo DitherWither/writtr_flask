@@ -5,6 +5,10 @@
 {% endblock title %}
 
 {% block content %}
+    {% if post['thumbnail_url'] %}
+        <img class="img-fluid" src="{{ post['thumbnail_url'] }}" alt="Post Thumbnail">
+    {% endif %}
+
     <h1 class="mb-4 mt-2 display-1">
         {{ post['title']}}
     </h1>

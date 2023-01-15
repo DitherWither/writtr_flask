@@ -17,6 +17,9 @@
 </form>
 
 <input form="create-form" name="title" class="form-control mb-3" value="{{ getField('title') }}" placeholder="Title">
+<input form="create-form" name="thumbnail_url" class="form-control mb-3" value="{{ getField('thumbnail_url') }}" placeholder="Thumbnail Url">
+<p class="text-muted">You can add a thumbnail by going to an image host like imgur or ImgBB and getting the direct link to the image</p>
+
 <textarea form="create-form" name="description" id="description" class="form-control mb-3"
     placeholder="Description">{{ getField('description') }}</textarea>
 

@@ -14,5 +14,6 @@ CREATE TABLE posts (
     time_created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
-    description TEXT
+    description TEXT,
+    thumbnail_url TEXT
 );
