@@ -117,17 +117,18 @@ def delete(post_id):
 
 @bp.route('/user/<handle>')
 def view_user(handle):
-    if handle[0] != '@':
-        flask.abort(404, f"Handles must begin with '@' symbol")
+    start = 0
+    if handle[0] == '@':
+        start = 1
 
-    user_name = handle[1:]
+    user_name = handle[start:]
 
     cursor = blog_mgr.db.get().cursor()
     user = cursor.execute('SELECT first_name, last_name, user_name FROM users WHERE user_name = %s',
                           (user_name,)).fetchone()
     user_posts = cursor.execute(
         "SELECT post_id, title,time_created,description, user_name, author " +
-        "FROM posts LEFT JOIN users ON posts.author = users.user_name NATURAL JOIN users WHERE users.user_name = %s "
+        "FROM posts LEFT JOIN users AS u ON posts.author = u.user_name NATURAL JOIN users WHERE users.user_name = %s "
         "ORDER BY time_created DESC;",
         (user_name,)
     ).fetchall()

@@ -25,7 +25,7 @@ def get():
     #     # flask.g.db.row_factory = sqlite3.Row
         create_certfile()
         flask.g.db = psycopg.connect(os.environ.get('DATABASE_URL') + '&sslrootcert=/tmp/root.crt', row_factory=psycopg.rows.dict_row)
-        print(flask.g.db)
+        
 
     return flask.g.db
 
