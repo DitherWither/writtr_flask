@@ -1,5 +1,5 @@
 import functools
-import psycopg2
+import psycopg
 
 import flask
 import werkzeug.security as security
@@ -37,7 +37,7 @@ def register():
                      security.generate_password_hash(password))
                 )
                 cursor.close()
-            except psycopg2.IntegrityError:
+            except psycopg.IntegrityError:
                 error = f"User '{user_name}' already exists"
             else:
                 

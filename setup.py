@@ -14,6 +14,7 @@ setup(
         'Flask',
         'Flask-Markdown',
         'psycopg',
+        'requests',
         'python-dotenv'
     ]
 )
