@@ -13,7 +13,7 @@ setup(
     install_requires=[
         'Flask',
         'Flask-Markdown',
-        'psycopg2-binary',
+        'psycopg',
         'python-dotenv'
     ]
 )
