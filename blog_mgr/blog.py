@@ -12,7 +12,7 @@ def index():
     posts = []
 
     posts = cursor.execute(
-        "SELECT post_id, title,time_created,first_name,last_name,user_name,description, author " +
+        "SELECT thumbnail_url, post_id, title,time_created,first_name,last_name,user_name,description, author " +
         "FROM posts LEFT JOIN users AS u ON author = u.user_name NATURAL JOIN users ORDER BY time_created DESC;"
     ).fetchall()
     cursor.close()
@@ -30,10 +30,10 @@ def create():
         else:
             cursor = blog_mgr.db.get().cursor()
             cursor.execute(
-                'INSERT INTO posts(title, body, author, description)'
-                'VALUES(%s, %s, %s, %s)',
+                'INSERT INTO posts(title, body, author, description, thumbnail_url)'
+                'VALUES(%s, %s, %s, %s, %s)',
                 (content['title'], content['body'],
-                 flask.g.user['user_name'], content['description'])
+                 flask.g.user['user_name'], content.get('description'), content.get('thumbnail_url'))
             )
             cursor.close()
             return flask.redirect(flask.url_for('blog.index'))
@@ -44,7 +44,7 @@ def create():
 def get_post(post_id, check_author=True):
     cursor = blog_mgr.db.get().cursor()
     post = cursor.execute(
-        "SELECT post_id, body, title,time_created,first_name,last_name,user_name,description, author " +
+        "SELECT thumbnail_url, post_id, body, title,time_created,first_name,last_name,user_name,description, author " +
         "FROM posts LEFT JOIN users u ON posts.author = u.user_name NATURAL JOIN users WHERE post_id = %s;",
         (post_id,)
     ).fetchone()
@@ -63,6 +63,7 @@ def read_post_form():
     title = flask.request.form['title']
     body = flask.request.form['body']
     description = flask.request.form['description']
+    thumbnail_url = flask.request.form['thumbnail_url']
 
     error = None
     if not title:
@@ -70,7 +71,7 @@ def read_post_form():
     if not body:
         error = 'Body is required'
 
-    return {"title": title, "body": body, "description": description, "error": error}
+    return {"title": title, "body": body, "description": description, "thumbnail_url": thumbnail_url, "error": error}
 
 
 @bp.route('/view/<int:post_id>')
@@ -92,9 +93,9 @@ def update(post_id: int):
         else:
             cursor = blog_mgr.db.get().cursor()
             cursor.execute(
-                'UPDATE posts SET title = %s, body = %s, description = %s WHERE post_id = %s',
+                'UPDATE posts SET title = %s, body = %s, description = %s, thumbnail_url = %s WHERE post_id = %s',
                 (content['title'], content['body'],
-                 content['description'], post_id)
+                 content['description'], content['thumbnail_url'], post_id)
             )
             cursor.close()
             return flask.redirect(flask.url_for('blog.index'))
