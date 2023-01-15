@@ -24,16 +24,15 @@ Markdown(app)
 blog_mgr.db.init_app(app)
 
 url = environ.get("DATABASE_CERT")
-save_path = os.path.join(os.environ.get("HOME"), '.postgresql', 'root.crt')
+home_directory = os.path.expanduser('~')
+save_path = os.path.join(home_directory, '.postgresql', 'root.crt')
 
-print("database_cert Url is ", url)
-print("save path is", save_path)
+
 content = requests.get(environ.get("DATABASE_CERT")).content
 
 open(save_path, 'wb')\
     .write(content)
 
-print("content is ", content)
 
 print(os.path.dirname(__file__))
 
