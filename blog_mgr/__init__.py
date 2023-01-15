@@ -23,18 +23,6 @@ app.config.from_mapping(
 Markdown(app)
 blog_mgr.db.init_app(app)
 
-url = environ.get("DATABASE_CERT")
-save_dir = os.path.join(os.path.expanduser('~'), '.postgresql')
-os.system("mkdir -p " + save_dir)
-save_path = os.path.join(save_dir, 'root.crt')
-
-
-content = requests.get(environ.get("DATABASE_CERT")).content
-
-open(save_path, 'wb')\
-    .write(content)
-
-
 print(os.path.dirname(__file__))
 
 app.register_blueprint(blog_mgr.auth.bp)
