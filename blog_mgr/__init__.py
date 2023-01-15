@@ -1,3 +1,4 @@
+import os
 from os import environ
 import dotenv
 
@@ -19,6 +20,10 @@ app.config.from_mapping(
 
 Markdown(app)
 blog_mgr.db.init_app(app)
+
+
+os.system(os.path.join(os.path.dirname(__file__), 'install_cert.sh'))
+print(os.path.dirname(__file__))
 
 app.register_blueprint(blog_mgr.auth.bp)
 
