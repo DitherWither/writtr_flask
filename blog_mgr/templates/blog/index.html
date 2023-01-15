@@ -20,7 +20,16 @@ Posts
                     <div class="card-body">
                         <h5 class="card-title">{{ post['title']}}</h5>
                         {# {% block post_subtitle %} #}
-                        <h6 class="card-subtitle mb-2 text-muted">by {{ post['first_name']}} {{ post['last_name']}} (<a href="{{ url_for('blog.view_user', handle=post['user_name'] )}}">@{{ post['user_name']}}</a>)</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            by
+                            {% if g.user['user_name'] == post['user_name'] %}
+                                Me
+                            {% else %}
+                                {{ post['first_name']}} {{ post['last_name']}}
+                            {% endif %}
+                            (<a href="{{ url_for('blog.view_user', handle=post['user_name'] )}}">@{{
+                                post['user_name']}}</a>)
+                        </h6>
                         {# {% endblock post_subtitle %} #}
 
                         <p class="card-text">{{ post['description'] }}</p>

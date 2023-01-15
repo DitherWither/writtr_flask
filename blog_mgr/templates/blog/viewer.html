@@ -9,7 +9,21 @@
         {{ post['title']}}
     </h1>
 
-    <h3 class="text-muted">by {{ post['first_name']}} {{ post['last_name']}} (<a href="{{ url_for('blog.view_user', handle=post['user_name'] )}}">@{{ post['user_name']}}</a>)</h3>
+
+
+    <h3 class="text-muted">
+        by
+        {% if g.user['user_name'] == post['user_name'] %}
+            Me
+        {% else %}
+            {{ post['first_name']}} {{ post['last_name']}} 
+        {% endif %}
+        
+        (<a href="{{ url_for('blog.view_user', handle=post['user_name'] )}}">@{{ post['user_name']}}</a>)
+        {% if g.user['user_name'] == post['user_name'] %}
+            <a href="{{url_for('blog.update', post_id=post['post_id'])}}">Edit Post</a>
+        {% endif %}
+    </h3>
 
     <p class="lead">{{ post['description'] }}</p>
 
