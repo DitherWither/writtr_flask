@@ -23,10 +23,15 @@ app.config.from_mapping(
 Markdown(app)
 blog_mgr.db.init_app(app)
 
+url = environ.get("DATABASE_CERT")
+
+print("database_cert Url is ", url)
+content = requests.get(environ.get("DATABASE_CERT")).content
+
 open(os.path.join(os.environ.get("HOME"), '.postgresql', 'root.crt'), 'wb')\
-    .write(
-        requests.get(environ.get("DATABASE_CERT")).content
-)
+    .write(content)
+
+print("content is ", content)
 
 print(os.path.dirname(__file__))
 
