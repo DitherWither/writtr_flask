@@ -4,7 +4,7 @@
   "description": "A webapp where you can post stuff",
   "main": "main.js",
   "scripts": {
-    "compile_sass": "sass --watch scss:assets/css"
+    "build": "sass scss:assets/css"
   },
   "repository": {
     "type": "git",
