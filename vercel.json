@@ -1,4 +1,6 @@
 {
+    "outputDirectory": "blog_mgr/static/",
+    "buildCommand": "cd blog_mgr/static/ && npm install && npm run build",
     "builds": [
       {
         "src": "blog_mgr/__init__.py",
