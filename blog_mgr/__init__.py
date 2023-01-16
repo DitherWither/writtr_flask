@@ -23,11 +23,6 @@ app.config.from_mapping(
 Markdown(app)
 blog_mgr.db.init_app(app)
 
-static_path = os.path.dirname(__file__) + '/static'
-main_css_path = static_path + '/assets/main.css'
-
-if not os.path.isfile(main_css_path):
-    os.system(f"cd {static_path} && npm install && npm run build")
 
 app.register_blueprint(blog_mgr.auth.bp)
 
